@@ -3,7 +3,6 @@ package dev.zwander.simswitcher
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.telephony.SubscriptionManager
 import androidx.activity.ComponentActivity
@@ -34,7 +33,6 @@ import dev.zwander.simswitcher.data.SwitcherType
 import dev.zwander.simswitcher.ui.theme.SIMSwitcherTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
-import org.lsposed.hiddenapibypass.HiddenApiBypass
 
 class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
     private val subsManager by lazy { getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE) as SubscriptionManager }
@@ -50,10 +48,6 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            HiddenApiBypass.setHiddenApiExemptions("")
-        }
 
         if (checkCallingOrSelfPermission(android.Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
             init()

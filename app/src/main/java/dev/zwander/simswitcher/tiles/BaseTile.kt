@@ -38,7 +38,7 @@ sealed class BaseTile(
     override fun onStartListening() {
         super.onStartListening()
 
-        qsTile?.icon = Icon.createWithResource(resources, iconRes)
+        qsTile?.icon = Icon.createWithResource(this, iconRes)
         qsTile?.label = resources.getString(labelRes)
         qsTile?.updateTile()
     }
