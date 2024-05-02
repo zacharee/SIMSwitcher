@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">SIMSwitcher</string>
+
+    <string name="switch_data">Switch Data</string>
+    <string name="switch_voice">Switch Voice</string>
+    <string name="switch_sms">Switch SMS</string>
+
+    <string name="default_data">Default Data</string>
+    <string name="default_voice">Default Voice</string>
+    <string name="default_sms">Default SMS</string>
+</resources>
