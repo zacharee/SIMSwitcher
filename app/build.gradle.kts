@@ -18,6 +18,8 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        setProperty("archivesBaseName", "SIMSwitcher_$versionName")
     }
 
     buildTypes {
