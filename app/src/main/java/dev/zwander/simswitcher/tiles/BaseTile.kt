@@ -52,7 +52,7 @@ sealed class BaseTile(
                 createSwitcherIntent(type, true),
                 0,
                 false,
-            )
+            ),
         )
     }
 }
