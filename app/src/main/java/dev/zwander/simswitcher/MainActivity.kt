@@ -82,18 +82,21 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
                         type = SwitcherType.DATA,
                         labelRes = R.string.default_data,
                         actionRes = R.string.switch_data,
+                        iconRes = R.drawable.baseline_data_usage_24,
                         currentSubInfo = { currentDataSubInfo },
                     ),
                     SwitcherItemData(
                         type = SwitcherType.VOICE,
                         labelRes = R.string.default_voice,
                         actionRes = R.string.switch_voice,
+                        iconRes = R.drawable.baseline_call_24,
                         currentSubInfo = { currentVoiceSubInfo },
                     ),
                     SwitcherItemData(
                         type = SwitcherType.SMS,
                         labelRes = R.string.default_sms,
                         actionRes = R.string.switch_sms,
+                        iconRes = R.drawable.baseline_sms_24,
                         currentSubInfo = { currentSmsSubInfo },
                     ),
                 )
@@ -147,7 +150,7 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
                         ) { item ->
                             SwitcherItem(
                                 data = item,
-                                modifier = Modifier.padding(8.dp),
+                                modifier = Modifier.padding(16.dp),
                             )
                         }
                     }
