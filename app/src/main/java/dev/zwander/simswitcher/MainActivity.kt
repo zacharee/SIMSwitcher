@@ -20,7 +20,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -37,13 +37,14 @@ import kotlinx.coroutines.MainScope
 class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
     private val subsManager by lazy { getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE) as SubscriptionManager }
 
-    private val permissionRequester = registerForActivityResult(ActivityResultContracts.RequestPermission()) { result ->
-        if (!result) {
-            finish()
-        } else {
-            init()
+    private val permissionRequester =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { result ->
+            if (!result) {
+                finish()
+            } else {
+                init()
+            }
         }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,14 +60,20 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
     @SuppressLint("MissingPermission")
     private fun init() {
         setContent {
-            var currentDataSub by remember {
-                mutableIntStateOf(SubscriptionManager.getDefaultDataSubscriptionId())
+            var currentDataSubInfo by remember {
+                mutableStateOf(
+                    subsManager.getActiveSubscriptionInfo(SubscriptionManager.getDefaultDataSubscriptionId()),
+                )
             }
-            var currentVoiceSub by remember {
-                mutableIntStateOf(SubscriptionManager.getDefaultVoiceSubscriptionId())
+            var currentVoiceSubInfo by remember {
+                mutableStateOf(
+                    subsManager.getActiveSubscriptionInfo(SubscriptionManager.getDefaultVoiceSubscriptionId()),
+                )
             }
-            var currentSmsSub by remember {
-                mutableIntStateOf(SubscriptionManager.getDefaultSmsSubscriptionId())
+            var currentSmsSubInfo by remember {
+                mutableStateOf(
+                    subsManager.getActiveSubscriptionInfo(SubscriptionManager.getDefaultSmsSubscriptionId()),
+                )
             }
 
             val items = remember {
@@ -75,29 +82,34 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
                         type = SwitcherType.DATA,
                         labelRes = R.string.default_data,
                         actionRes = R.string.switch_data,
-                        currentValue = { subsManager.getActiveSubscriptionInfo(currentDataSub) },
+                        currentSubInfo = { currentDataSubInfo },
                     ),
                     SwitcherItemData(
                         type = SwitcherType.VOICE,
                         labelRes = R.string.default_voice,
                         actionRes = R.string.switch_voice,
-                        currentValue = { subsManager.getActiveSubscriptionInfo(currentVoiceSub) },
+                        currentSubInfo = { currentVoiceSubInfo },
                     ),
                     SwitcherItemData(
                         type = SwitcherType.SMS,
                         labelRes = R.string.default_sms,
                         actionRes = R.string.switch_sms,
-                        currentValue = { subsManager.getActiveSubscriptionInfo(currentSmsSub) },
+                        currentSubInfo = { currentSmsSubInfo },
                     ),
                 )
             }
 
-            DisposableEffect(null) {
+            DisposableEffect(
+                key1 = null,
+            ) {
                 val subsListener = object : SubscriptionManager.OnSubscriptionsChangedListener() {
                     override fun onSubscriptionsChanged() {
-                        currentDataSub = SubscriptionManager.getDefaultDataSubscriptionId()
-                        currentVoiceSub = SubscriptionManager.getDefaultVoiceSubscriptionId()
-                        currentSmsSub = SubscriptionManager.getDefaultSmsSubscriptionId()
+                        currentDataSubInfo =
+                            subsManager.getActiveSubscriptionInfo(SubscriptionManager.getDefaultDataSubscriptionId())
+                        currentVoiceSubInfo =
+                            subsManager.getActiveSubscriptionInfo(SubscriptionManager.getDefaultVoiceSubscriptionId())
+                        currentSmsSubInfo =
+                            subsManager.getActiveSubscriptionInfo(SubscriptionManager.getDefaultSmsSubscriptionId())
                     }
                 }
 
@@ -129,7 +141,10 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
                         contentPadding = PaddingValues(8.dp),
                         verticalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
-                        items(items = items, key = { it.type }) { item ->
+                        items(
+                            items = items,
+                            key = { it.type },
+                        ) { item ->
                             SwitcherItem(
                                 data = item,
                                 modifier = Modifier.padding(8.dp),

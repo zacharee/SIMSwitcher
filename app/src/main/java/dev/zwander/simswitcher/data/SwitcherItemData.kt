@@ -10,5 +10,5 @@ data class SwitcherItemData(
     val labelRes: Int,
     @StringRes
     val actionRes: Int,
-    val currentValue: @Composable () -> SubscriptionInfo,
+    val currentSubInfo: @Composable () -> SubscriptionInfo,
 )

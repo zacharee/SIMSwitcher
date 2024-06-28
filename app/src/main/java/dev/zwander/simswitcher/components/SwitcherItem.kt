@@ -29,7 +29,7 @@ fun SwitcherItem(
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
-    val subInfo = data.currentValue()
+    val subInfo = data.currentSubInfo()
 
     Card {
         Column(
@@ -60,14 +60,22 @@ fun SwitcherItem(
                             contentDescription = null,
                         )
 
-                        Text(text = subInfo.displayName.toString())
+                        Text(
+                            text = subInfo.displayName.toString(),
+                        )
                     }
                 }
 
-                Spacer(modifier = Modifier.weight(1f))
+                Spacer(
+                    modifier = Modifier.weight(1f),
+                )
 
-                OutlinedButton(onClick = { context.launchSwitcher(data.type) }) {
-                    Text(text = stringResource(id = data.actionRes))
+                OutlinedButton(
+                    onClick = { context.launchSwitcher(data.type) },
+                ) {
+                    Text(
+                        text = stringResource(id = data.actionRes),
+                    )
                 }
             }
         }
