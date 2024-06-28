@@ -19,10 +19,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.DefaultLifecycleObserver
@@ -60,17 +58,17 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
     @SuppressLint("MissingPermission")
     private fun init() {
         setContent {
-            var currentDataSubInfo by remember {
+            val currentDataSubInfo = remember {
                 mutableStateOf(
                     subsManager.getActiveSubscriptionInfo(SubscriptionManager.getDefaultDataSubscriptionId()),
                 )
             }
-            var currentVoiceSubInfo by remember {
+            val currentVoiceSubInfo = remember {
                 mutableStateOf(
                     subsManager.getActiveSubscriptionInfo(SubscriptionManager.getDefaultVoiceSubscriptionId()),
                 )
             }
-            var currentSmsSubInfo by remember {
+            val currentSmsSubInfo = remember {
                 mutableStateOf(
                     subsManager.getActiveSubscriptionInfo(SubscriptionManager.getDefaultSmsSubscriptionId()),
                 )
@@ -83,21 +81,21 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
                         labelRes = R.string.default_data,
                         actionRes = R.string.switch_data,
                         iconRes = R.drawable.baseline_data_usage_24,
-                        currentSubInfo = { currentDataSubInfo },
+                        currentSubInfo = currentDataSubInfo,
                     ),
                     SwitcherItemData(
                         type = SwitcherType.VOICE,
                         labelRes = R.string.default_voice,
                         actionRes = R.string.switch_voice,
                         iconRes = R.drawable.baseline_call_24,
-                        currentSubInfo = { currentVoiceSubInfo },
+                        currentSubInfo = currentVoiceSubInfo,
                     ),
                     SwitcherItemData(
                         type = SwitcherType.SMS,
                         labelRes = R.string.default_sms,
                         actionRes = R.string.switch_sms,
                         iconRes = R.drawable.baseline_sms_24,
-                        currentSubInfo = { currentSmsSubInfo },
+                        currentSubInfo = currentSmsSubInfo,
                     ),
                 )
             }
@@ -107,11 +105,11 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
             ) {
                 val subsListener = object : SubscriptionManager.OnSubscriptionsChangedListener() {
                     override fun onSubscriptionsChanged() {
-                        currentDataSubInfo =
+                        currentDataSubInfo.value =
                             subsManager.getActiveSubscriptionInfo(SubscriptionManager.getDefaultDataSubscriptionId())
-                        currentVoiceSubInfo =
+                        currentVoiceSubInfo.value =
                             subsManager.getActiveSubscriptionInfo(SubscriptionManager.getDefaultVoiceSubscriptionId())
-                        currentSmsSubInfo =
+                        currentSmsSubInfo.value =
                             subsManager.getActiveSubscriptionInfo(SubscriptionManager.getDefaultSmsSubscriptionId())
                     }
                 }

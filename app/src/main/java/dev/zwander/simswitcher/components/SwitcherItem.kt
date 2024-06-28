@@ -13,6 +13,7 @@ import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,7 +33,7 @@ fun SwitcherItem(
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
-    val subInfo = data.currentSubInfo()
+    val subInfo by data.currentSubInfo
     val iconSize = with (LocalDensity.current) { 24.dp.roundToPx() }
 
     val iconBitmap = remember(subInfo) {
